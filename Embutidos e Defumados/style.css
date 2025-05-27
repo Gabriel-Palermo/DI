@@ -5,6 +5,7 @@
   box-sizing: border-box;
 }
 
+/* === CORES DA PÁGINA === */
 :root {
   --marrom-escuro: #5a2e0c;
   --vermelho-queimado: #a83226;
@@ -24,7 +25,7 @@ body {
   background-image: var(--fundo-textura);
   color: var(--texto-escuro);
   line-height: 1.6;
-  padding-top: 100px; /* espaço para header fixo */
+  padding-top: 120px; /* espaço para header fixo */
   padding-bottom: 60px; /* espaço para footer */
 }
 
@@ -40,6 +41,7 @@ header {
   z-index: 1000;
 }
 
+/* === HEADER CONTAINER=== */
 header .container {
   max-width: 1100px;
   margin: 0 auto;
@@ -94,6 +96,7 @@ footer {
   user-select: none;
 }
 
+/* === FOOTER CONTAINER === */
 footer .container {
   max-width: 1100px;
   width: 100%;
@@ -126,6 +129,7 @@ form fieldset {
   padding: 0;
 }
 
+/* === LEGENDA DO FORMULÁRIO === */
 form legend {
   font-size: 1.5rem;
   margin-bottom: 20px;
@@ -159,6 +163,7 @@ textarea {
   transition: border-color 0.3s ease;
   background-color: #fff8f0;
   color: var(--marrom-escuro);
+  transition: all 0.3s ease;
 }
 
 input:focus,
@@ -173,20 +178,22 @@ textarea:focus {
 button[type="submit"] {
   display: block;
   width: 100%;
-  background-color: var(--vermelho-queimado);
+  background-color: rgb(53, 218, 11);
   color: var(--bege-claro);
   font-size: 1.3rem;
   padding: 14px;
   border: none;
   border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(90, 46, 12, 0.3);
   cursor: pointer;
   font-weight: 700;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   transition: background-color 0.3s ease;
 }
 
+/* === BOTÃO APÓS MOUSE PASSAR EM CIMA === */
 button[type="submit"]:hover {
-  background-color: var(--marrom-escuro);
+  background-color: rgb(29, 110, 4);
 }
 
 /* === MENSAGENS === */
@@ -202,6 +209,36 @@ small {
   margin-top: 6px;
   color: var(--marrom-escuro);
   font-style: italic;
+}
+
+/* === LOGO E TÍTULO NO TOPO === */
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+/* === LOGO === */
+.logo {
+  height: 55px;
+  width: auto;
+  max-width: 80px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(136, 131, 128, 0.3);
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+/* === MENSAGEM SUCESSO === */
+#mensagem.sucesso {
+  color: green;
+  animation: fadeIn 0.5s ease;
+}
+
+/* === FLAMES DE CHAVES === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* === RESPONSIVO === */
