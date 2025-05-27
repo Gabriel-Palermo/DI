@@ -5,20 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cadastro de Produtos - Embutidos e Defumados</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="img/Logo.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 <body>
   <header>
-    <div class="container">
+  <div class="container">
+    <div class="logo-area">
+      <img src="img/Logo.png" alt="Logo Sabor da Colônia" class="logo" />
       <h1>Embutidos &amp; Defumados</h1>
-      <nav aria-label="Menu principal">
-        <ul>
-          <li><a href="#">Início</a></li>
-          <li><a href="#">Produtos</a></li>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">Contato</a></li>
-        </ul>
-      </nav>
     </div>
+    <nav aria-label="Menu principal">
+      <ul>
+        <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="#">Produtos</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
   </header>
 
   <main>
@@ -41,6 +46,8 @@
             <option value="Salame">Salame</option>
             <option value="Bacon">Bacon</option>
             <option value="Presunto">Presunto</option>
+            <option value="Torresmo">Torresmo</option>
+            <option value="Queijo">Queijo</option>
             <option value="Outro">Outro</option>
           </select>
         </div>
@@ -56,12 +63,12 @@
         </div>
 
         <div class="campo">
-          <label for="quantidade">Quantidade em Estoque<span aria-hidden="true">*</span></label>
+          <label for="quantidade">Adicionar Produtos<span aria-hidden="true">*</span></label>
           <input type="number" id="quantidade" name="quantidade" required aria-required="true" min="0" />
         </div>
 
         <div class="campo">
-          <label for="validade">Data de Validade<span aria-hidden="true">*</span></label>
+          <label for="validade">Data de Validade (lote de Produtos)<span aria-hidden="true">*</span></label>
           <input type="date" id="validade" name="validade" required aria-required="true" />
         </div>
 
@@ -80,7 +87,7 @@
 
   <footer>
     <div class="container">
-      <p>© 2025 Embutidos &amp; Defumados - Todos os direitos reservados</p>
+      <p>© 2025 Sabor da Colônia - Todos os direitos reservados</p>
     </div>
   </footer>
 </body>
