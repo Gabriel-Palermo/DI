@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap');
+
+:root {
+  --marrom-escuro: #5a2e0c;
+  --vermelho-queimado: #a83226;
+  --bege-claro: #f4ede3;
+  --laranja-terroso: #d96c3b;
+  --texto-escuro: #3b2f2f;
+  --fundo-textura: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: var(--bege-claro);
+  background-image: var(--fundo-textura);
+  color: var(--texto-escuro);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* === CONTAINER DO LOGIN === */
+.login-container {
+  background-color: rgba(244, 237, 227, 0.95);
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(90, 46, 12, 0.3);
+  max-width: 400px;
+  width: 100%;
+}
+
+/* === TÍTULO === */
+h2 {
+  font-family: 'Pacifico', cursive;
+  text-align: center;
+  font-size: 2.2rem;
+  color: var(--marrom-escuro);
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 2px var(--laranja-terroso);
+}
+
+/* === CAMPOS === */
+label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--marrom-escuro);
+  letter-spacing: 0.02em;
+  margin-top: 20px;
+}
+
+input {
+  width: 93%;
+  padding: 12px;
+  border: 2px solid var(--laranja-terroso);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  background-color: #fff8f0;
+  color: var(--marrom-escuro);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border-color: var(--vermelho-queimado);
+  outline: none;
+  box-shadow: 0 0 8px var(--vermelho-queimado);
+}
+
+/* === HEADER === */
+header {
+  background-color: var(--marrom-escuro);
+  color: var(--bege-claro);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+/* === HEADER CONTAINER=== */
+header .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+header h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+header nav ul li a {
+  color: var(--bege-claro);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+header nav ul li a:hover,
+header nav ul li a:focus {
+  color: var(--laranja-terroso);
+  outline: none;
+}
+
+/* === LOGO E TÍTULO NO TOPO === */
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+/* === LOGO === */
+.logo {
+  height: 55px;
+  width: auto;
+  max-width: 80px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(136, 131, 128, 0.3);
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+main {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: rgba(244, 237, 227, 0.95); /* fundo translúcido */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(90, 46, 12, 0.3);
+}
+
+/* === BOTÃO === */
+button {
+  margin-top: 30px;
+  width: 100%;
+  padding: 14px;
+  background-color: rgb(53, 218, 11);
+  color: var(--bege-claro);
+  border: none;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: rgb(29, 110, 4);
+}
+
+/* === MENSAGEM DE ERRO === */
+#erro {
+  color: var(--vermelho-queimado);
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* === FOOTER === */
+footer {
+  background-color: var(--marrom-escuro);
+  color: var(--bege-claro);
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  box-shadow: 0 -3px 8px rgba(0,0,0,0.3);
+  user-select: none;
+}
+
+/* === FOOTER CONTAINER === */
+footer .container {
+  max-width: 1100px;
+  width: 100%;
+  padding: 0 20px;
+}

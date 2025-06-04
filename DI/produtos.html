@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produtos - Embutidos & Defumados</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    /* Estilos existentes */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: rgba(244, 237, 227, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(90, 46, 12, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      color: var(--marrom-escuro);
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--laranja-terroso);
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+
+    .search-box button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      background-color: var(--vermelho-queimado);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-box button:hover {
+      background-color: #7a1d17;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: var(--marrom-escuro);
+      color: var(--bege-claro);
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-area">
+        <img src="img/Logo.png" alt="Logo" class="logo">
+        <h1>Embutidos & Defumados</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="cadastro_produtos.html"><i class="fas fa-home"></i> Início</a></li>
+          <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Lista de Produtos</h2>
+    <div class="search-box">
+      <input type="text" id="buscaProduto" placeholder="Buscar por nome ou tipo...">
+      <button id="btnBuscar"><i class="fas fa-search"></i> Buscar</button>
+    </div>
+
+    <table id="tabelaProdutos">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Peso</th>
+          <th>Preço (Kg)</th>
+          <th>Quantidade</th>
+          <th>Validade</th>
+        </tr>
+      </thead>
+      <tbody id="listaProdutos"></tbody>
+    </table>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Sabor da Colônia - Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    // Verifica se o usuário está autenticado
+    if (localStorage.getItem('autenticado') !== 'true') {
+      window.location.href = 'login.html'; // redireciona pro login se não estiver logado
+    }
+
+    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    const tbody = document.getElementById('listaProdutos');
+    const buscaProduto = document.getElementById('buscaProduto');
+    const btnBuscar = document.getElementById('btnBuscar');
+
+    function exibirProdutos(produtosFiltrados) {
+      tbody.innerHTML = ''; // Limpa a tabela antes de inserir
+      produtosFiltrados.forEach(produto => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${produto.nome}</td>
+          <td>${produto.tipo}</td>
+          <td>${produto.peso} ${produto.unidadePeso}</td> <!-- Adicionando a unidade de peso -->
+          <td>R$ ${parseFloat(produto.preco).toFixed(2)}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.validade}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Exibe todos os produtos inicialmente
+    exibirProdutos(produtos);
+
+    // Função de busca
+    btnBuscar.addEventListener('click', () => {
+      const termoBusca = buscaProduto.value.toLowerCase();
+      const produtosFiltrados = produtos.filter(produto => 
+        produto.nome.toLowerCase().includes(termoBusca) || 
+        produto.tipo.toLowerCase().includes(termoBusca)
+      );
+      exibirProdutos(produtosFiltrados);
+    });
+
+    // Adiciona funcionalidade de busca ao pressionar Enter
+    buscaProduto.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        btnBuscar.click();
+      }
+    });
+  </script>
+
+</body>
+</html>

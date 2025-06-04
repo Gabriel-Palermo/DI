@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Administrativo</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="icon" href="img/icon.png">
+</head>
+<body>
+
+  <header>
+    <div class="container logo-area">
+      <img src="img/Logo.png" alt="Logo" class="logo">
+      <h1>Sabor da Colônia</h1>
+    </div>
+  </header>
+
+  <main>
+    <h2>Login do Administrador</h2>
+    <form id="loginForm">
+      <label for="usuario">Usuário:</label>
+      <input type="text" id="usuario" required />
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" required />
+
+      <button type="submit">Entrar</button>
+      <div id="erro"></div>
+    </form>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Sabor da Colônia. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById('usuario').value;
+      const senha = document.getElementById('senha').value;
+
+      if (usuario === 'admin' && senha === '1234') {
+        localStorage.setItem('autenticado', 'true');
+        window.location.href = 'cadastro_produtos.html'; // vai para a página de cadastro de produtos
+      } else {
+        document.getElementById('erro').textContent = 'Usuário ou senha incorretos.';
+      }
+    });
+  </script>
+</body>
+</html>

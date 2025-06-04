@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - Embutidos e Defumados</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="img/icon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
+  <style>
+    main {
+      max-width: 1100px;
+      margin: 40px auto 60px;
+      background-color: rgba(244, 237, 227, 0.95);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 5px 15px rgba(90, 46, 12, 0.3);
+      color: var(--texto-escuro);
+    }
+
+    .resumo-linha {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 40px;
+      gap: 30px;
+      flex-wrap: nowrap;
+    }
+
+    .resumo-item {
+      flex: 1 1 0;
+      padding: 29px 25px 30px 45px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(90, 46, 12, 0.25);
+      color: white;
+      text-align: right;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      user-select: none;
+      min-width: 220px;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .resumo-item:hover {
+      transform: scale(1.05);
+    }
+
+    .resumo-item i.fa-icon-bg,
+    .resumo-item i {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 3rem;
+      opacity: 0.15;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Cores para a primeira linha */
+    .card-cadastrados {
+      background-color: var(--laranja-terroso);
+      cursor: default;
+    }
+
+    .card-baixo-estoque {
+      background-color: var(--vermelho-queimado);
+    }
+
+    .card-proximos-validade {
+      background-color: #f39c12;
+    }
+
+    /* Cores para a segunda linha (distintas e mais vivas) */
+    .card-produtos-totais {
+      background-color: #2980b9; /* azul */
+    }
+
+    .card-produtos-vencidos {
+      background-color: #e74c3c; /* vermelho quente */
+    }
+
+    .card-alto-estoque {
+      background-color: #27ae60; /* verde */
+    }
+
+    .resumo-item h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: white;
+      position: relative;
+      z-index: 1;
+      font-weight: 700;
+    }
+
+    .resumo-item p {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: white;
+      position: relative;
+      z-index: 1;
+      line-height: 1;
+    }
+
+    .tabela-detalhada {
+      max-width: 1000px;
+      margin: 60px auto;
+      background-color: rgba(244, 237, 227, 0.95);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(90, 46, 12, 0.25);
+      padding: 30px;
+      display: none;
+    }
+
+    .tabela-detalhada h3 {
+      color: var(--marrom-escuro);
+      margin-bottom: 20px;
+      font-family: "Pacifico", cursive;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .tabela-estoque table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tabela-estoque th,
+    .tabela-estoque td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--laranja-terroso);
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    .tabela-estoque th {
+      background-color: var(--marrom-escuro);
+      color: var(--bege-claro);
+      font-weight: bold;
+    }
+
+    .tabela-estoque tbody tr:hover {
+      background-color: #f4ede3;
+      cursor: default;
+    }
+
+    .tabela-estoque tbody tr:nth-child(even) {
+      background-color: #fef4ea;
+    }
+
+    .tabela-estoque tbody tr:nth-child(odd) {
+      background-color: #fff8f0;
+    }
+
+    td.baixo-estoque {
+      background-color: rgba(255, 0, 0, 0.15);
+      color: #a83226;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-area">
+        <img src="img/Logo.png" alt="Logo Sabor da Colônia" class="logo" />
+        <h1>Embutidos &amp; Defumados</h1>
+      </div>
+      <nav aria-label="Menu principal">
+        <ul>
+          <li><a href="cadastro_produtos.html"><i class="fas fa-home"></i> Início</a></li>
+          <li><a href="produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Dashboard de Estoque</h2>
+
+    <!-- Linha 1 -->
+    <section class="resumo resumo-linha" aria-label="Resumo do estoque">
+      <div class="resumo-item card-cadastrados" tabindex="0" aria-label="Total de produtos cadastrados">
+        <i class="fas fa-box"></i>
+        <h3>Cadastrados</h3>
+        <p id="totalProdutos">0</p>
+      </div>
+      <div class="resumo-item card-baixo-estoque" id="cardBaixoEstoque" tabindex="0"
+        aria-label="Produtos com baixo estoque. Clique para ver detalhes">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Baixo Estoque</h3>
+        <p id="produtosBaixoEstoque">0</p>
+      </div>
+      <div class="resumo-item card-proximos-validade" id="cardProximosValidade" tabindex="0"
+        aria-label="Produtos próximos da validade. Clique para ver detalhes">
+        <i class="fas fa-calendar-alt"></i>
+        <h3>Próximos da Validade</h3>
+        <p id="produtosProximosValidade">0</p>
+      </div>
+    </section>
+
+    <!-- Linha 2 -->
+    <section class="resumo resumo-linha" aria-label="Resumo do estoque adicional">
+      <div class="resumo-item card-produtos-totais" id="cardTotalProdutos" tabindex="0"
+        aria-label="Total de produtos em estoque">
+        <i class="fas fa-boxes"></i>
+        <h3>Produtos Totais</h3>
+        <p id="produtosTotais">0</p>
+      </div>
+      <div class="resumo-item card-produtos-vencidos" id="cardProdutosVencidos" tabindex="0"
+        aria-label="Produtos vencidos. Clique para ver detalhes">
+        <i class="fas fa-times-circle"></i>
+        <h3>Vencidos</h3>
+        <p id="produtosVencidos">0</p>
+      </div>
+      <div class="resumo-item card-alto-estoque" id="cardAltoEstoque" tabindex="0"
+        aria-label="Produtos com alto estoque. Clique para ver detalhes">
+        <i class="fas fa-arrow-up"></i>
+        <h3>Alto Estoque</h3>
+        <p id="produtosAltoEstoque">0</p>
+      </div>
+    </section>
+
+    <!-- Seções das tabelas ocultas -->
+    <section id="secBaixoEstoque" class="tabela-detalhada" aria-label="Tabela de produtos com baixo estoque">
+      <h3>Produtos com Baixo Estoque</h3>
+      <div class="tabela-estoque">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Peso</th>
+              <th>Preço (Kg)</th>
+              <th>Quantidade</th>
+              <th>Validade</th>
+            </tr>
+          </thead>
+          <tbody id="listaBaixoEstoque"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="secProximosValidade" class="tabela-detalhada" aria-label="Tabela de produtos próximos da validade">
+      <h3>Produtos Próximos da Validade</h3>
+      <div class="tabela-estoque">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Peso</th>
+              <th>Preço (Kg)</th>
+              <th>Quantidade</th>
+              <th>Validade</th>
+            </tr>
+          </thead>
+          <tbody id="listaProximosValidade"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="secProdutosVencidos" class="tabela-detalhada" aria-label="Tabela de produtos vencidos">
+      <h3>Produtos Vencidos</h3>
+      <div class="tabela-estoque">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Peso</th>
+              <th>Preço (Kg)</th>
+              <th>Quantidade</th>
+              <th>Validade</th>
+            </tr>
+          </thead>
+          <tbody id="listaProdutosVencidos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="secAltoEstoque" class="tabela-detalhada" aria-label="Tabela de produtos com alto estoque">
+      <h3>Produtos com Alto Estoque</h3>
+      <div class="tabela-estoque">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Peso</th>
+              <th>Preço (Kg)</th>
+              <th>Quantidade</th>
+              <th>Validade</th>
+            </tr>
+          </thead>
+          <tbody id="listaProdutosAltoEstoque"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Sabor da Colônia - Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+
+    const totalProdutos = produtos.length;
+    const produtosBaixoEstoque = produtos.filter(p => Number(p.quantidade) < 5);
+    const produtosProximosValidade = produtos.filter(p => {
+      const hoje = new Date();
+      const dataValidade = new Date(p.validade);
+      const diffTime = dataValidade - hoje;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays >= 0 && diffDays <= 7;
+    });
+
+    const produtosVencidos = produtos.filter(p => {
+      const dataValidade = new Date(p.validade);
+      return dataValidade < new Date();
+    });
+
+    const produtosAltoEstoque = produtos.filter(p => Number(p.quantidade) > 20);
+
+    const somaTotalUnidades = produtos.reduce((acc, p) => acc + Number(p.quantidade), 0);
+
+    // Atualiza valores nos cartões
+    document.getElementById('totalProdutos').textContent = totalProdutos;
+    document.getElementById('produtosBaixoEstoque').textContent = produtosBaixoEstoque.length;
+    document.getElementById('produtosProximosValidade').textContent = produtosProximosValidade.length;
+    document.getElementById('produtosTotais').textContent = somaTotalUnidades;
+    document.getElementById('produtosVencidos').textContent = produtosVencidos.length;
+    document.getElementById('produtosAltoEstoque').textContent = produtosAltoEstoque.length;
+
+    function criarLinhaTabela(produto, destaqueEstoque = false) {
+      return `
+        <tr${destaqueEstoque ? ' class="baixo-estoque"' : ''}>
+          <td>${produto.nome}</td>
+          <td>${produto.tipo}</td>
+          <td>${produto.peso} ${produto.unidadePeso}</td> <!-- Adicionando a unidade de peso -->
+          <td>R$ ${parseFloat(produto.preco).toFixed(2)}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.validade}</td>
+        </tr>
+      `;
+    }
+
+    const tbodyBaixoEstoque = document.getElementById('listaBaixoEstoque');
+    tbodyBaixoEstoque.innerHTML = produtosBaixoEstoque.map(p => criarLinhaTabela(p, true)).join('');
+
+    const tbodyProximosValidade = document.getElementById('listaProximosValidade');
+    tbodyProximosValidade.innerHTML = produtosProximosValidade.map(p => criarLinhaTabela(p)).join('');
+
+    const tbodyProdutosVencidos = document.getElementById('listaProdutosVencidos');
+    tbodyProdutosVencidos.innerHTML = produtosVencidos.map(p => criarLinhaTabela(p)).join('');
+
+    const tbodyProdutosAltoEstoque = document.getElementById('listaProdutosAltoEstoque');
+    tbodyProdutosAltoEstoque.innerHTML = produtosAltoEstoque.map(p => criarLinhaTabela(p)).join('');
+
+    function mostrarSecao(secParaMostrar) {
+      const secBaixo = document.getElementById('secBaixoEstoque');
+      const secValidade = document.getElementById('secProximosValidade');
+      const secVencidos = document.getElementById('secProdutosVencidos');
+      const secAlto = document.getElementById('secAltoEstoque');
+
+      // esconder todas
+      secBaixo.style.display = 'none';
+      secValidade.style.display = 'none';
+      secVencidos.style.display = 'none';
+      secAlto.style.display = 'none';
+
+      // mostrar a selecionada e rolar até ela
+      let sec = null;
+      switch(secParaMostrar) {
+        case 'baixo': sec = secBaixo; break;
+        case 'validade': sec = secValidade; break;
+        case 'vencidos': sec = secVencidos; break;
+        case 'alto': sec = secAlto; break;
+      }
+      if (sec) {
+        sec.style.display = 'block';
+        sec.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+    }
+
+    // Eventos clique para mostrar cada tabela
+    document.getElementById('cardBaixoEstoque').addEventListener('click', () => mostrarSecao('baixo'));
+    document.getElementById('cardProximosValidade').addEventListener('click', () => mostrarSecao('validade'));
+    document.getElementById('cardProdutosVencidos').addEventListener('click', () => mostrarSecao('vencidos'));
+    document.getElementById('cardAltoEstoque').addEventListener('click', () => mostrarSecao('alto'));
+
+    // Acessibilidade - ativar via teclado (Enter e Space)
+    ['cardBaixoEstoque','cardProximosValidade','cardProdutosVencidos','cardAltoEstoque'].forEach(id => {
+      const elem = document.getElementById(id);
+      elem.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          elem.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

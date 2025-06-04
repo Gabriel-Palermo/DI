@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <script>
+    if (localStorage.getItem('autenticado') !== 'true') {
+      window.location.href = 'login.html'; // redireciona pro login se não estiver logado
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Produtos - Embutidos e Defumados</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="img/icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    /* Estilo básico para input file e pré-visualização */
+    #previewImg {
+      max-width: 150px;
+      max-height: 150px;
+      margin-top: 10px;
+      border-radius: 10px;
+      display: none;
+      object-fit: contain;
+      box-shadow: 0 4px 12px rgba(90, 46, 12, 0.3);
+    }
+
+    /* Ocultar o input de arquivo padrão */
+    #imagem {
+      display: none;
+    }
+
+    /* Estilo para o botão de upload personalizado */
+    .btn-upload {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50; /* Cor de fundo */
+      color: white; /* Cor do texto */
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(90, 46, 12, 0.3);
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+
+    .btn-upload:hover {
+      background-color: #45a049; /* Cor de fundo ao passar o mouse */
+    }
+
+    /* Estilo para o texto do arquivo selecionado */
+    .file-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Estilo para o campo de peso e unidade */
+    .campo-peso {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end; /* Garante alinhamento pela base dos inputs */
+    }
+
+    .peso-input {
+      flex: 3;
+    }
+    .unidade-select {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-area">
+        <img src="img/Logo.png" alt="Logo Sabor da Colônia" class="logo" />
+        <h1>Embutidos &amp; Defumados</h1>
+      </div>
+      <nav aria-label="Menu principal">
+        <ul>
+          <li><a href="cadastro_produtos.html"><i class="fas fa-home-alt"></i> Início </a></li>
+          <li><a href="produtos.html"><i class="fas fa-box-open"></i> Produtos </a></li>
+          <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard </a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Cadastro de Produtos</h2>
+
+    <form id="formProduto" aria-label="Formulário de Cadastro de Produto">
+      <fieldset>
+        <legend>Informações do Produto</legend>
+
+        <div class="campo">
+          <label for="nome">Nome do Produto<span aria-hidden="true">*</span></label>
+          <input type="text" id="nome" name="nome" required aria-required="true" />
+        </div>
+
+        <div class="campo">
+          <label for="tipo">Tipo de Produto<span aria-hidden="true">*</span></label>
+          <select id="tipo" name="tipo" required aria-required="true">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="Linguiça">Linguiça</option>
+            <option value="Salame">Salame</option>
+            <option value="Bacon">Bacon</option>
+            <option value="Presunto">Presunto</option>
+            <option value="Torresmo">Torresmo</option>
+            <option value="Queijo">Queijo</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="campo campo-peso">
+          <div class="peso-input">
+            <label for="peso">Peso (em gramas ou Kg)<span aria-hidden="true">*</span></label>
+            <input type="number" id="peso" name="peso" required aria-required="true" step="0.01" min="0" />
+          </div>
+          <div class="unidade-select">
+            <label for="unidadePeso"></label>
+            <select id="unidadePeso" name="unidadePeso" required aria-required="true">
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="preco">Preço (Kg)<span aria-hidden="true">*</span></label>
+          <input type="number" id="preco" name="preco" required aria-required="true" step="0.01" min="0" />
+        </div>
+
+        <div class="campo">
+          <label for="quantidade">Adicionar Quantidade de Produtos<span aria-hidden="true">*</span></label>
+          <input type="number" id="quantidade" name="quantidade" required aria-required="true" min="0" />
+        </div>
+
+        <div class="campo">
+          <label for="validade">Data de Validade (lote de Produtos)<span aria-hidden="true">*</span></label>
+          <input type="date" id="validade" name="validade" required aria-required="true" />
+        </div>
+
+        <div class="campo">
+          <label for="descricao">Descrição (opcional)</label>
+          <textarea id="descricao" name="descricao" rows="4" aria-describedby="infoDescricao"></textarea>
+          <small id="infoDescricao">Ex: Informações sobre defumação, tempero, etc.</small>
+        </div>
+
+        <div class="campo">
+          <label for="imagem">Imagem do Produto (opcional)</label>
+          <input type="file" id="imagem" accept="image/*" />
+          <button type="button" class="btn-upload" onclick="document.getElementById('imagem').click();">Upload Imagem</button>
+          <img id="previewImg" alt="Pré-visualização da imagem do produto" />
+          <div class="file-info" id="fileInfo">Nenhuma imagem selecionada</div>
+        </div>
+
+        <div class="botoes">
+          <button type="cancel" onclick="logout()">Cancelar</button>
+          <button type="submit">Cadastrar Produto</button>
+        </div>
+
+      </fieldset>
+    </form>
+
+    <div id="mensagem" role="alert" aria-live="polite"></div>
+  </main>
+
+  <script>
+    function logout() {
+      localStorage.removeItem('autenticado');
+      window.location.href = 'login.html';
+    }
+
+    const form = document.getElementById("formProduto");
+    const mensagem = document.getElementById("mensagem");
+    const inputImagem = document.getElementById("imagem");
+    const previewImg = document.getElementById("previewImg");
+    const fileInfo = document.getElementById("fileInfo");
+
+    let imagemBase64 = "";
+
+    inputImagem.addEventListener("change", function() {
+      const file = this.files[0];
+      if (!file) {
+        previewImg.style.display = "none";
+        imagemBase64 = "";
+        fileInfo.textContent = "Nenhuma imagem selecionada";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagemBase64 = e.target.result;
+        previewImg.src = imagemBase64;
+        previewImg.style.display = "block";
+        fileInfo.textContent = file.name; // Exibe o nome do arquivo selecionado
+      };
+      reader.readAsDataURL(file);
+    });
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); // impede envio real
+
+      // Coleta os dados do formulário
+      const produto = {
+        nome: document.getElementById("nome").value,
+        tipo: document.getElementById("tipo").value,
+        peso: document.getElementById("peso").value,
+        unidadePeso: document.getElementById("unidadePeso").value, // Coleta a unidade de peso
+        preco: document.getElementById("preco").value,
+        quantidade: document.getElementById("quantidade").value,
+        validade: document.getElementById("validade").value,
+        descricao: document.getElementById("descricao").value,
+        imagem: imagemBase64 // aqui está a imagem em base64 ou string vazia
+      };
+
+      // Recupera produtos existentes ou cria um novo array
+      const produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+
+      // Adiciona o novo produto
+      produtos.push(produto);
+
+      // Salva no localStorage
+      localStorage.setItem("produtos", JSON.stringify(produtos));
+
+      // Exibe a mensagem
+      mensagem.textContent = "Produto cadastrado com sucesso!";
+      mensagem.classList.add("sucesso");
+
+      // Limpa o formulário e pré-visualização da imagem
+      form.reset();
+      previewImg.style.display = "none";
+      imagemBase64 = "";
+      fileInfo.textContent = "Nenhuma imagem selecionada!"; // Reseta a informação do arquivo
+
+      // Esconde a mensagem depois de 4 segundos
+      setTimeout(() => {
+        mensagem.textContent = "";
+        mensagem.classList.remove("sucesso");
+      }, 4000);
+    });
+  </script>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Sabor da Colônia - Todos os direitos reservados</p>
+    </div>
+  </footer>
+</body>
+</html>
